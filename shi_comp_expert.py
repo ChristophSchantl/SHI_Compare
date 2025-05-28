@@ -112,17 +112,17 @@ def plot_performance(cumulative_dict):
         if cum is None or len(cum) == 0:
             continue
         ax.plot(cum.index, cum / cum.iloc[0], label=name, linewidth=1)
-    ax.set_title("Kumulative Performance (Start = 1.0)", fontsize=10, pad=10)
-    ax.set_xlabel("Datum", fontsize=8)
-    ax.set_ylabel("Indexierte Entwicklung", fontsize=8)
-    ax.legend(loc='center left', bbox_to_anchor=(1.0, 0.5), frameon=False, fontsize=7)
-    ax.tick_params(axis='x', labelsize=7)
-    ax.tick_params(axis='y', labelsize=7)
+    ax.set_title("Kumulative Performance (Start = 1.0)", fontsize=8, pad=8)
+    ax.set_xlabel("Datum", fontsize=5)
+    ax.set_ylabel("Indexierte Entwicklung", fontsize=5)
+    ax.legend(loc='center left', bbox_to_anchor=(1.0, 0.5), frameon=False, fontsize=5)
+    ax.tick_params(axis='x', labelsize=5)
+    ax.tick_params(axis='y', labelsize=5)
     plt.tight_layout()
     plt.subplots_adjust(right=0.85)
     st.pyplot(fig)
 
-    fig2, ax2 = plt.subplots(figsize=(6, 2.5))
+    fig2, ax2 = plt.subplots(figsize=(6, 3))
     for name, cum in cumulative_dict.items():
         if cum is None or len(cum) == 0:
             continue
@@ -141,12 +141,12 @@ def plot_performance(cumulative_dict):
             continue
         ax2.fill_between(x, y, 0, alpha=0.3)
         ax2.plot(x, y, linewidth=1, label=name)
-    ax2.set_title("Drawdown-Verlauf", fontsize=10, pad=10)
+    ax2.set_title("Drawdown-Verlauf", fontsize=8, pad=8)
     ax2.set_ylabel("Drawdown", fontsize=8)
-    ax2.legend(loc='center left', bbox_to_anchor=(1.0, 0.5), frameon=False, fontsize=7)
-    ax2.tick_params(axis='x', labelsize=7)
-    ax2.tick_params(axis='y', labelsize=7)
-    ax2.grid(True, linestyle='--', alpha=0.3)
+    ax2.legend(loc='center left', bbox_to_anchor=(1.0, 0.5), frameon=False, fontsize=5)
+    ax2.tick_params(axis='x', labelsize=5)
+    ax2.tick_params(axis='y', labelsize=5)
+    ax2.grid(True, linestyle='--', alpha=0.1)
     ax2.spines['top'].set_visible(False)
     ax2.spines['right'].set_visible(False)
     plt.tight_layout()
