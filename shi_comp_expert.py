@@ -172,12 +172,12 @@ def analyze_correlations(returns_dict):
         fmt='.2f',
         linewidths=0.5,
         ax=ax,
-        annot_kws={"size": 8, "color": "black"}  # Größe der Zahlen
+        annot_kws={"size": 6, "color": "black"}  # Größe der Zahlen
     )
     # -- Titel und Achsen-Beschriftungen kleiner machen --
-    ax.set_title("Korrelationsmatrix der täglichen Renditen", fontsize=10, pad=8)
-    ax.tick_params(axis='x', labelsize=8)  # Größe der x-Achsen-Beschriftung
-    ax.tick_params(axis='y', labelsize=8)  # Größe der y-Achsen-Beschriftung
+    ax.set_title("Korrelationsmatrix der täglichen Renditen", fontsize=8, pad=6)
+    ax.tick_params(axis='x', labelsize=6)  # Größe der x-Achsen-Beschriftung
+    ax.tick_params(axis='y', labelsize=6)  # Größe der y-Achsen-Beschriftung
     plt.tight_layout()
     st.pyplot(fig)
     return corr_matrix
