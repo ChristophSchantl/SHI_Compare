@@ -153,7 +153,7 @@ def plot_performance(cumulative_dict):
     ax.legend(loc='upper left', fontsize=5, frameon=False, handlelength=1.8, borderaxespad=0.1, labelspacing=0.2)
     ax.tick_params(axis='x', labelsize=5)
     ax.tick_params(axis='y', labelsize=5)
-    ax.grid(True, axis='y', linestyle=':', alpha=0.2)
+    ax.grid(True, axis='y', linestyle=':', alpha=0.1)
     fig.tight_layout(pad=1)
     st.pyplot(fig)
 
@@ -176,7 +176,7 @@ def plot_performance(cumulative_dict):
     ax2.legend(loc='upper left', fontsize=5, frameon=False)
     ax2.tick_params(axis='x', labelsize=5)
     ax2.tick_params(axis='y', labelsize=5)
-    ax2.grid(True, axis='y', linestyle=':', alpha=0.2)
+    ax2.grid(True, axis='y', linestyle=':', alpha=0.1)
     fig2.tight_layout(pad=1)
     st.pyplot(fig2)
 
@@ -193,7 +193,7 @@ def analyze_correlations(returns_dict):
     fig, ax = plt.subplots(figsize=(3.8, max(1.4, len(corr_matrix.columns)*0.22)))
     sns.heatmap(
         corr_matrix, annot=True, cmap=HEATMAP_CMAP, center=0, fmt='.2f',
-        linewidths=0.25, ax=ax, annot_kws={"size": 6, "color": "#222"},
+        linewidths=0.15, ax=ax, annot_kws={"size": 5, "color": "#222"},
         cbar=False, square=True
     )
     ax.set_title("Korrelation Tagesrenditen", fontsize=7, pad=5)
@@ -218,9 +218,9 @@ def analyze_rolling_performance(returns_dict, window=126):
         return rolling_sharpe
     fig, ax = plt.subplots(figsize=(5, 1.7))
     for idx, name in enumerate(rolling_sharpe.columns):
-        ax.plot(rolling_sharpe.index, rolling_sharpe[name], label=name, color=LINE_COLORS[idx % len(LINE_COLORS)], linewidth=0.5)
+        ax.plot(rolling_sharpe.index, rolling_sharpe[name], label=name, color=LINE_COLORS[idx % len(LINE_COLORS)], linewidth=0.1)
     ax.set_title(f"Rollierender Sharpe Ratio (126 Tage)", fontsize=5, pad=5)
-    ax.axhline(0, color='#aaa', linestyle='--', linewidth=0.5)
+    ax.axhline(0, color='#aaa', linestyle='--', linewidth=0.1)
     ax.legend(loc='upper left', fontsize=6, frameon=False)
     ax.tick_params(axis='x', labelsize=5)
     ax.tick_params(axis='y', labelsize=5)
