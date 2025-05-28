@@ -105,52 +105,53 @@ def calculate_metrics(returns_dict, cumulative_dict):
         metrics.loc[name, 'Positive Months'] = positive_months
     return metrics
 
-# -- Plots und Analysefunktionen wie gehabt (unverändert) --
+# -- Plots & Analysefunktionen: ALLE klein, dezent, fein --
 def plot_performance(cumulative_dict):
-    fig, ax = plt.subplots(figsize=(12, 6))
+    fig, ax = plt.subplots(figsize=(6, 3))
     for name, cum in cumulative_dict.items():
         if cum is None or len(cum) == 0:
             continue
-        ax.plot(cum.index, cum / cum.iloc[0], label=name, linewidth=1.5)
-    ax.set_title("Kumulative Performance (Start = 1.0)", fontsize=14, fontweight='bold', pad=20)
-    ax.set_xlabel("Datum", fontsize=12)
-    ax.set_ylabel("Indexierte Entwicklung", fontsize=12)
-    ax.legend(loc='center left', bbox_to_anchor=(1.0, 0.5), frameon=False)
+        ax.plot(cum.index, cum / cum.iloc[0], label=name, linewidth=1)
+    ax.set_title("Kumulative Performance (Start = 1.0)", fontsize=10, pad=10)
+    ax.set_xlabel("Datum", fontsize=8)
+    ax.set_ylabel("Indexierte Entwicklung", fontsize=8)
+    ax.legend(loc='center left', bbox_to_anchor=(1.0, 0.5), frameon=False, fontsize=7)
+    ax.tick_params(axis='x', labelsize=7)
+    ax.tick_params(axis='y', labelsize=7)
     plt.tight_layout()
     plt.subplots_adjust(right=0.85)
     st.pyplot(fig)
 
-    fig2, ax2 = plt.subplots(figsize=(12, 4))
+    fig2, ax2 = plt.subplots(figsize=(6, 2.5))
     for name, cum in cumulative_dict.items():
         if cum is None or len(cum) == 0:
             continue
         drawdown = (cum / cum.cummax()) - 1
-        # --- Fix für den Fehler: ---
         if isinstance(drawdown, pd.DataFrame):
             drawdown = drawdown.iloc[:, 0]
-        drawdown = pd.Series(drawdown.values, index=drawdown.index)  # erzwinge 1D-Series!
+        drawdown = pd.Series(drawdown.values, index=drawdown.index)
         drawdown = drawdown.dropna()
         if drawdown.empty or len(drawdown) < 2:
             continue
-        x = np.array(drawdown.index)        # Array von DatetimeIndex
-        y = np.array(drawdown.values).flatten()  # 1D-Array
-        # Sicherheitscheck (verhindere Plot-Fehler)
+        x = np.array(drawdown.index)
+        y = np.array(drawdown.values).flatten()
         if y.ndim > 1:
             y = y.flatten()
         if len(x) != len(y):
             continue
         ax2.fill_between(x, y, 0, alpha=0.3)
         ax2.plot(x, y, linewidth=1, label=name)
-    ax2.set_title("Drawdown-Verlauf", fontsize=14, fontweight='bold', pad=20)
-    ax2.set_ylabel("Drawdown", fontsize=12)
-    ax2.legend(loc='center left', bbox_to_anchor=(1.0, 0.5), frameon=False)
+    ax2.set_title("Drawdown-Verlauf", fontsize=10, pad=10)
+    ax2.set_ylabel("Drawdown", fontsize=8)
+    ax2.legend(loc='center left', bbox_to_anchor=(1.0, 0.5), frameon=False, fontsize=7)
+    ax2.tick_params(axis='x', labelsize=7)
+    ax2.tick_params(axis='y', labelsize=7)
     ax2.grid(True, linestyle='--', alpha=0.3)
     ax2.spines['top'].set_visible(False)
     ax2.spines['right'].set_visible(False)
     plt.tight_layout()
     plt.subplots_adjust(right=0.85)
     st.pyplot(fig2)
-
 
 def analyze_correlations(returns_dict):
     returns_clean = {}
@@ -162,8 +163,7 @@ def analyze_correlations(returns_dict):
     if corr_matrix.empty:
         st.warning("Zu wenig Daten für Korrelationsmatrix!")
         return corr_matrix
-        
-    fig, ax = plt.subplots(figsize=(8, 6)) 
+    fig, ax = plt.subplots(figsize=(6, 3))
     sns.heatmap(
         corr_matrix,
         annot=True,
@@ -172,17 +172,14 @@ def analyze_correlations(returns_dict):
         fmt='.2f',
         linewidths=0.5,
         ax=ax,
-        annot_kws={"size": 6, "color": "black"}  # Größe der Zahlen
+        annot_kws={"size": 6, "color": "black"}
     )
-    ax.set_title("Korrelationsmatrix der täglichen Renditen", fontsize=8, pad=6)
-    ax.tick_params(axis='x', labelsize=8)  # X-Beschriftung
-    ax.tick_params(axis='y', labelsize=8)  # Y-Beschriftung
+    ax.set_title("Korrelationsmatrix der täglichen Renditen", fontsize=10, pad=10)
+    ax.tick_params(axis='x', labelsize=7)
+    ax.tick_params(axis='y', labelsize=7)
     plt.tight_layout()
-    st.pyplot(fig)                
-    return corr_matrix 
-
-    
-
+    st.pyplot(fig)
+    return corr_matrix
 
 def analyze_rolling_performance(returns_dict, window=126):
     rolling_sharpe = pd.DataFrame()
@@ -196,12 +193,14 @@ def analyze_rolling_performance(returns_dict, window=126):
     if rolling_sharpe.empty:
         st.warning("Zu wenig Daten für rollierende Kennzahlen!")
         return rolling_sharpe
-    fig, ax = plt.subplots(figsize=(12, 4))
+    fig, ax = plt.subplots(figsize=(6, 2.5))
     for name in rolling_sharpe:
         ax.plot(rolling_sharpe.index, rolling_sharpe[name], label=name, linewidth=1)
-    ax.set_title(f"Rollierender Sharpe Ratio (126-Tage Fenster)", fontsize=14, pad=20)
+    ax.set_title(f"Rollierender Sharpe Ratio (126-Tage Fenster)", fontsize=10, pad=10)
     ax.axhline(0, color='gray', linestyle='--', linewidth=0.5)
-    ax.legend(loc='center left', bbox_to_anchor=(1.0, 0.5), frameon=False)
+    ax.legend(loc='center left', bbox_to_anchor=(1.0, 0.5), frameon=False, fontsize=7)
+    ax.tick_params(axis='x', labelsize=7)
+    ax.tick_params(axis='y', labelsize=7)
     plt.tight_layout()
     plt.subplots_adjust(right=0.85)
     st.pyplot(fig)
@@ -234,7 +233,6 @@ def main():
             name = file.name.replace('.csv', '')
             try:
                 ret, cum = load_returns_from_csv(file)
-                # Filter auf Datumsbereich
                 ret = ret.loc[(ret.index >= pd.Timestamp(start)) & (ret.index <= pd.Timestamp(end))]
                 cum = cum.loc[(cum.index >= pd.Timestamp(start)) & (cum.index <= pd.Timestamp(end))]
                 returns_dict[name] = ret
@@ -291,7 +289,6 @@ def main():
             metrics_fmt.index = metrics_fmt.index.to_series().apply(lambda x: f"**{x}**")
             st.dataframe(metrics_fmt, use_container_width=True, height=350)
 
-
     # --- Performance-Tab ---
     with tabs[1]:
         st.subheader("Kumulative Performance & Drawdown")
@@ -312,8 +309,6 @@ def main():
             analyze_correlations(returns_dict)
 
     # --- Monatsrenditen Heatmap ---
-
-    
     with tabs[3]:
         st.subheader("Monatliche Renditen")
         if returns_dict:
@@ -322,7 +317,7 @@ def main():
                 for name, ret in returns_dict.items()
             })
             if not monthly_returns.empty:
-                fig, ax = plt.subplots(figsize=(10, max(3, len(monthly_returns.columns))))
+                fig, ax = plt.subplots(figsize=(7, max(2.2, len(monthly_returns.columns)*0.33)))
                 sns.heatmap(
                     monthly_returns.T,
                     annot=True,
@@ -333,18 +328,18 @@ def main():
                     ax=ax,
                     annot_kws={"size": 6, "color": "black", "fontname": "DejaVu Sans"}
                 )
-                ax.set_title("Monatliche Renditen", fontsize=12, pad=20)
+                ax.set_title("Monatliche Renditen", fontsize=10, pad=12)
                 ax.set_xticklabels(
                     [pd.to_datetime(label.get_text()).strftime('%Y-%m') for label in ax.get_xticklabels()],
-                    rotation=45, ha='right'
+                    rotation=45, ha='right', fontsize=7
                 )
+                ax.set_yticklabels(ax.get_yticklabels(), fontsize=7)
                 plt.tight_layout()
                 st.pyplot(fig)
             else:
                 st.warning("Keine Monatsrenditen für diesen Zeitraum vorhanden.")
         else:
             st.warning("Keine Daten vorhanden.")
-
 
 if __name__ == "__main__":
     main()
