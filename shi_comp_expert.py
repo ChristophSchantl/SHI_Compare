@@ -265,7 +265,7 @@ def analyze_rolling_performance(returns_dict, window=126):
     return rolling_sharpe, rolling_vol
 
 def main():
-    st.title("Portfolio Analyse Dashboard (ohne empyrical)")
+    st.title("Portfolio Analyse Dashboard")
     st.markdown("Vergleich verschiedener Strategien und Fonds (inkl. echte Namen aus Yahoo Finance)")
 
     # Zeitauswahl (Timeline)
