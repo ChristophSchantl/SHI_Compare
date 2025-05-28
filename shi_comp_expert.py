@@ -326,9 +326,9 @@ def main():
                     center=0,
                     linewidths=0.25,
                     ax=ax,
-                    annot_kws={"size": 4, "color": "black", "fontname": "DejaVu Sans"}
+                    annot_kws={"size": 5, "color": "black", "fontname": "DejaVu Sans"}
                 )
-                ax.set_title("Monatliche Renditen", fontsize=5, pad=8)
+                ax.set_title("Monatliche Renditen", fontsize=5, pad=10)
                 ax.set_xticklabels(
                     [pd.to_datetime(label.get_text()).strftime('%Y-%m') for label in ax.get_xticklabels()],
                     rotation=45, ha='right', fontsize=5
