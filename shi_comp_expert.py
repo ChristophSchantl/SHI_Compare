@@ -331,9 +331,9 @@ def main():
                 ax.set_title("Monatliche Renditen", fontsize=5, pad=10)
                 ax.set_xticklabels(
                     [pd.to_datetime(label.get_text()).strftime('%Y-%m') for label in ax.get_xticklabels()],
-                    rotation=45, ha='right', fontsize=4
+                    rotation=45, ha='right', fontsize=5
                 )
-                ax.set_yticklabels(ax.get_yticklabels(), fontsize=3)
+                ax.set_yticklabels(ax.get_yticklabels(), fontsize=5)
                 plt.tight_layout()
                 st.pyplot(fig)
             else:
