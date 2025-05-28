@@ -286,7 +286,7 @@ def main():
             for col in ['Sharpe Ratio', 'Sortino Ratio', 'Calmar Ratio', 'Omega Ratio', 'Tail Ratio', 'Profit Factor']:
                 if col in metrics_fmt.columns:
                     metrics_fmt[col] = metrics_fmt[col].round(2)
-            metrics_fmt.index = metrics_fmt.index.to_series().apply(lambda x: f"**{x}**")
+            metrics_fmt.index = metrics_fmt.index.to_series().apply(lambda x: f"{x}")
             st.dataframe(metrics_fmt, use_container_width=True, height=350)
 
     # --- Performance-Tab ---
@@ -317,16 +317,16 @@ def main():
                 for name, ret in returns_dict.items()
             })
             if not monthly_returns.empty:
-                fig, ax = plt.subplots(figsize=(7, max(2.2, len(monthly_returns.columns)*0.33)))
+                fig, ax = plt.subplots(figsize=(5, max(2, len(monthly_returns.columns)*0.33)))
                 sns.heatmap(
                     monthly_returns.T,
                     annot=True,
                     fmt='-.1%',
                     cmap='RdYlGn',
                     center=0,
-                    linewidths=0.5,
+                    linewidths=0.25,
                     ax=ax,
-                    annot_kws={"size": 5, "color": "black", "fontname": "DejaVu Sans"}
+                    annot_kws={"size": 4, "color": "black", "fontname": "DejaVu Sans"}
                 )
                 ax.set_title("Monatliche Renditen", fontsize=8, pad=10)
                 ax.set_xticklabels(
