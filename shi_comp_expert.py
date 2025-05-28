@@ -8,16 +8,6 @@ import warnings
 import seaborn as sns
 from datetime import datetime, timedelta
 
-try:
-    import empyrical as ep
-except ImportError:
-    st.warning("Bitte installiere empyrical via pip install empyrical für volle Funktionalität!")
-    class DummyEmpyrical:
-        def sortino_ratio(self, *a, **kw): return np.nan
-        def omega_ratio(self, *a, **kw): return np.nan
-        def tail_ratio(self, *a, **kw): return np.nan
-    ep = DummyEmpyrical()
-
 warnings.simplefilter(action='ignore', category=FutureWarning)
 sns.set_theme(style="darkgrid")
 plt.style.use('seaborn-v0_8-darkgrid')
@@ -106,6 +96,32 @@ def load_and_sync_data(start, end, display_names_map):
         cumulative_dict[name] = cumulative_dict[name].loc[common_index]
     return returns_dict, cumulative_dict
 
+def sortino_ratio(returns, risk_free=0.0, annualization=252):
+    """Annualized Sortino Ratio"""
+    # Downside only
+    downside = returns[returns < risk_free]
+    downside_std = downside.std(ddof=0)
+    mean_ret = returns.mean()
+    if downside_std == 0 or np.isnan(downside_std):
+        return np.nan
+    daily_sortino = (mean_ret - risk_free) / downside_std
+    return daily_sortino * np.sqrt(annualization)
+
+def omega_ratio(returns, risk_free=0.0):
+    """Annäherung Omega Ratio, Schwelle risk_free (meist 0)"""
+    gain = (returns > risk_free).sum()
+    loss = (returns <= risk_free).sum()
+    if loss == 0:
+        return np.nan
+    return gain / loss
+
+def tail_ratio(returns):
+    """p95 / |p5| der Return-Verteilung"""
+    try:
+        return np.percentile(returns, 95) / abs(np.percentile(returns, 5))
+    except Exception:
+        return np.nan
+
 def calculate_metrics(returns_dict, cumulative_dict):
     metrics = pd.DataFrame()
     for name in returns_dict:
@@ -122,23 +138,14 @@ def calculate_metrics(returns_dict, cumulative_dict):
         annual_ret = float((1 + total_ret)**(365/days) - 1) if days > 0 else np.nan
         annual_vol = float(ret.std() * np.sqrt(252))
         sharpe = (annual_ret - RISK_FREE_RATE) / annual_vol if annual_vol > 0 else np.nan
-        try:
-            sortino = ep.sortino_ratio(ret, annualization=252) if not ret.empty else np.nan
-        except Exception:
-            sortino = np.nan
+        sortino = sortino_ratio(ret, risk_free=0.0)
         drawdowns = (cum / cum.cummax() - 1)
         mdd = float(drawdowns.min()) if not drawdowns.empty else np.nan
         calmar = annual_ret / abs(mdd) if (not np.isnan(mdd) and mdd < 0) else np.nan
         var_95 = float(ret.quantile(0.05))
         cvar_95 = float(ret[ret <= var_95].mean())
-        try:
-            omega_ratio = ep.omega_ratio(ret, annualization=252)
-        except Exception:
-            omega_ratio = np.nan
-        try:
-            tail_ratio = ep.tail_ratio(ret)
-        except Exception:
-            tail_ratio = np.nan
+        omega = omega_ratio(ret, risk_free=0.0)
+        tail = tail_ratio(ret)
         win_rate = float(len(ret[ret > 0]) / len(ret))
         avg_win = float(ret[ret > 0].mean())
         avg_loss = float(ret[ret < 0].mean())
@@ -155,8 +162,8 @@ def calculate_metrics(returns_dict, cumulative_dict):
         metrics.loc[name, 'Calmar Ratio'] = calmar
         metrics.loc[name, 'VaR (95%)'] = var_95
         metrics.loc[name, 'CVaR (95%)'] = cvar_95
-        metrics.loc[name, 'Omega Ratio'] = omega_ratio
-        metrics.loc[name, 'Tail Ratio'] = tail_ratio
+        metrics.loc[name, 'Omega Ratio'] = omega
+        metrics.loc[name, 'Tail Ratio'] = tail
         metrics.loc[name, 'Win Rate'] = win_rate
         metrics.loc[name, 'Avg Win'] = avg_win
         metrics.loc[name, 'Avg Loss'] = avg_loss
@@ -258,7 +265,7 @@ def analyze_rolling_performance(returns_dict, window=126):
     return rolling_sharpe, rolling_vol
 
 def main():
-    st.title("Portfolio Analyse Dashboard")
+    st.title("Portfolio Analyse Dashboard (ohne empyrical)")
     st.markdown("Vergleich verschiedener Strategien und Fonds (inkl. echte Namen aus Yahoo Finance)")
 
     # Zeitauswahl (Timeline)
