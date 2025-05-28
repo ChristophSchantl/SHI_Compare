@@ -163,8 +163,6 @@ def analyze_correlations(returns_dict):
         st.warning("Zu wenig Daten für Korrelationsmatrix!")
         return corr_matrix
         
-    # -- Kleinere Figure --
-    
     fig, ax = plt.subplots(figsize=(8, 4)) 
     sns.heatmap(
         corr_matrix,
@@ -179,8 +177,11 @@ def analyze_correlations(returns_dict):
     ax.set_title("Korrelationsmatrix der täglichen Renditen", fontsize=12, pad=10)
     ax.tick_params(axis='x', labelsize=8)  # X-Beschriftung
     ax.tick_params(axis='y', labelsize=8)  # Y-Beschriftung
-    
+    plt.tight_layout()
+    st.pyplot(fig)                # <---- Diese Zeile war bei dir vergessen!
+    return corr_matrix            # <---- und diese auch!
 
+    
 
 
 def analyze_rolling_performance(returns_dict, window=126):
