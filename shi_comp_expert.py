@@ -196,8 +196,8 @@ def analyze_rolling_performance(returns_dict, window=126):
     fig, ax = plt.subplots(figsize=(6, 2.5))
     for name in rolling_sharpe:
         ax.plot(rolling_sharpe.index, rolling_sharpe[name], label=name, linewidth=1)
-    ax.set_title(f"Rollierender Sharpe Ratio (126-Tage Fenster)", fontsize=10, pad=10)
-    ax.axhline(0, color='gray', linestyle='--', linewidth=0.5)
+    ax.set_title(f"Rollierender Sharpe Ratio (126-Tage Fenster)", fontsize=8, pad=8)
+    ax.axhline(0, color='gray', linestyle='--', linewidth=0.25)
     ax.legend(loc='center left', bbox_to_anchor=(1.0, 0.5), frameon=False, fontsize=7)
     ax.tick_params(axis='x', labelsize=7)
     ax.tick_params(axis='y', labelsize=7)
@@ -333,7 +333,7 @@ def main():
                     [pd.to_datetime(label.get_text()).strftime('%Y-%m') for label in ax.get_xticklabels()],
                     rotation=45, ha='right', fontsize=5
                 )
-                ax.set_yticklabels(ax.get_yticklabels(), fontsize=7)
+                ax.set_yticklabels(ax.get_yticklabels(), fontsize=5)
                 plt.tight_layout()
                 st.pyplot(fig)
             else:
