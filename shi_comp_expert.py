@@ -317,7 +317,7 @@ def main():
                 for name, ret in returns_dict.items()
             })
             if not monthly_returns.empty:
-                fig, ax = plt.subplots(figsize=(5, max(2, len(monthly_returns.columns)*0.33)))
+                fig, ax = plt.subplots(figsize=(4, max(2, len(monthly_returns.columns)*0.33)))
                 sns.heatmap(
                     monthly_returns.T,
                     annot=True,
@@ -326,7 +326,7 @@ def main():
                     center=0,
                     linewidths=0.25,
                     ax=ax,
-                    annot_kws={"size": 5, "color": "black", "fontname": "DejaVu Sans"}
+                    annot_kws={"size": 3.5, "color": "black", "fontname": "DejaVu Sans"}
                 )
                 ax.set_title("Monatliche Renditen", fontsize=5, pad=10)
                 ax.set_xticklabels(
