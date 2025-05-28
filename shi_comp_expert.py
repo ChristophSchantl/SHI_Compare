@@ -1,52 +1,17 @@
-import streamlit as st
 from st_aggrid import AgGrid, GridOptionsBuilder
+import streamlit as st
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib as mpl
-import seaborn as sns
-from datetime import datetime, timedelta
 import yfinance as yf
 import warnings
+import seaborn as sns
+from datetime import datetime, timedelta
 
-# --- Stil- und Farbdefinitionen ---
+# ---- Styling & Optionen ----
 warnings.simplefilter(action='ignore', category=FutureWarning)
-
-# Matplotlib/Seaborn-Stil
-mpl.rcParams['font.family'] = 'DejaVu Sans'
-mpl.rcParams['font.size'] = 5
-mpl.rcParams['axes.labelsize'] = 5
-mpl.rcParams['axes.titlesize'] = 6
-mpl.rcParams['legend.fontsize'] = 5
-mpl.rcParams['xtick.labelsize'] = 5
-mpl.rcParams['ytick.labelsize'] = 5
-mpl.rcParams['axes.edgecolor'] = '#d3d3d3'
-mpl.rcParams['axes.linewidth'] = 0.5
-mpl.rcParams['grid.color'] = '#efefef'
-mpl.rcParams['grid.linewidth'] = 0.4
-mpl.rcParams['figure.facecolor'] = 'white'
-mpl.rcParams['axes.facecolor'] = 'white'
-mpl.rcParams['savefig.facecolor'] = 'white'
-mpl.rcParams['axes.spines.top'] = False
-mpl.rcParams['axes.spines.right'] = False
-mpl.rcParams['lines.linewidth'] = 0.5
-mpl.rcParams['lines.markersize'] = 1
-
-# Dezente Linienfarben (Farbliste)
-LINE_COLORS = [
-    "#8ECFC9", "#FFBE7A", "#FA7F6F", "#82B0D2", "#BEB8DC",
-    "#FFB5B8", "#B5EAD7", "#E2F0CB", "#d2b8ff", "#a0b5eb"
-]
-
-# Dezente Heatmap-Palette
-HEATMAP_CMAP = mpl.colors.ListedColormap([
-    "#e7ecef", "#cfd8dc", "#b0bec5", "#90a4ae", "#78909c",
-    "#6d9886", "#5a8878", "#496f6b", "#2d4c4c"
-])
-
-# Streamlit-Design
-sns.set_theme(style="white")
-plt.style.use('default')
+sns.set_theme(style="darkgrid")
+plt.style.use('seaborn-v0_8-darkgrid')
 pd.set_option('display.float_format', '{:.2%}'.format)
 st.set_page_config(page_title="Strategie-Analyse & Risiko-Kennzahlen", layout="wide")
 
@@ -140,26 +105,25 @@ def calculate_metrics(returns_dict, cumulative_dict):
         metrics.loc[name, 'Positive Months'] = positive_months
     return metrics
 
-# --- Dezent-minimalistische Plots ---
+# -- Plots & Analysefunktionen: ALLE klein, dezent, fein --
 def plot_performance(cumulative_dict):
-    fig, ax = plt.subplots(figsize=(5, 2.2))
-    for idx, (name, cum) in enumerate(cumulative_dict.items()):
+    fig, ax = plt.subplots(figsize=(6, 3))
+    for name, cum in cumulative_dict.items():
         if cum is None or len(cum) == 0:
             continue
-        ax.plot(cum.index, cum / cum.iloc[0], label=name, color=LINE_COLORS[idx % len(LINE_COLORS)])
-    ax.set_title("Kumulative Performance", fontsize=8, pad=5, fontweight='normal')
-    ax.set_xlabel("Datum", fontsize=5)
-    ax.set_ylabel("Indexiert", fontsize=5)
-    ax.legend(loc='upper left', fontsize=5, frameon=False, handlelength=1.8, borderaxespad=0.1, labelspacing=0.2)
-    ax.tick_params(axis='x', labelsize=5)
-    ax.tick_params(axis='y', labelsize=5)
-    ax.grid(True, axis='y', linestyle=':', alpha=0.1)
-    fig.tight_layout(pad=1)
+        ax.plot(cum.index, cum / cum.iloc[0], label=name, linewidth=1)
+    ax.set_title("Kumulative Performance (Start = 1.0)", fontsize=10, pad=10)
+    ax.set_xlabel("Datum", fontsize=8)
+    ax.set_ylabel("Indexierte Entwicklung", fontsize=8)
+    ax.legend(loc='center left', bbox_to_anchor=(1.0, 0.5), frameon=False, fontsize=7)
+    ax.tick_params(axis='x', labelsize=7)
+    ax.tick_params(axis='y', labelsize=7)
+    plt.tight_layout()
+    plt.subplots_adjust(right=0.85)
     st.pyplot(fig)
 
-    # Drawdown-Plot
-    fig2, ax2 = plt.subplots(figsize=(5, 1.8))
-    for idx, (name, cum) in enumerate(cumulative_dict.items()):
+    fig2, ax2 = plt.subplots(figsize=(6, 2.5))
+    for name, cum in cumulative_dict.items():
         if cum is None or len(cum) == 0:
             continue
         drawdown = (cum / cum.cummax()) - 1
@@ -169,15 +133,24 @@ def plot_performance(cumulative_dict):
         drawdown = drawdown.dropna()
         if drawdown.empty or len(drawdown) < 2:
             continue
-        ax2.fill_between(drawdown.index, drawdown.values, 0, color=LINE_COLORS[idx % len(LINE_COLORS)], alpha=0.1)
-        ax2.plot(drawdown.index, drawdown.values, color=LINE_COLORS[idx % len(LINE_COLORS)], linewidth=0.5, label=name)
-    ax2.set_title("Drawdown-Verlauf", fontsize=5, pad=5)
-    ax2.set_ylabel("Drawdown", fontsize=5)
-    ax2.legend(loc='upper left', fontsize=5, frameon=False)
-    ax2.tick_params(axis='x', labelsize=5)
-    ax2.tick_params(axis='y', labelsize=5)
-    ax2.grid(True, axis='y', linestyle=':', alpha=0.1)
-    fig2.tight_layout(pad=1)
+        x = np.array(drawdown.index)
+        y = np.array(drawdown.values).flatten()
+        if y.ndim > 1:
+            y = y.flatten()
+        if len(x) != len(y):
+            continue
+        ax2.fill_between(x, y, 0, alpha=0.3)
+        ax2.plot(x, y, linewidth=1, label=name)
+    ax2.set_title("Drawdown-Verlauf", fontsize=10, pad=10)
+    ax2.set_ylabel("Drawdown", fontsize=8)
+    ax2.legend(loc='center left', bbox_to_anchor=(1.0, 0.5), frameon=False, fontsize=7)
+    ax2.tick_params(axis='x', labelsize=7)
+    ax2.tick_params(axis='y', labelsize=7)
+    ax2.grid(True, linestyle='--', alpha=0.3)
+    ax2.spines['top'].set_visible(False)
+    ax2.spines['right'].set_visible(False)
+    plt.tight_layout()
+    plt.subplots_adjust(right=0.85)
     st.pyplot(fig2)
 
 def analyze_correlations(returns_dict):
@@ -190,17 +163,21 @@ def analyze_correlations(returns_dict):
     if corr_matrix.empty:
         st.warning("Zu wenig Daten für Korrelationsmatrix!")
         return corr_matrix
-    fig, ax = plt.subplots(figsize=(3.8, max(1.4, len(corr_matrix.columns)*0.22)))
+    fig, ax = plt.subplots(figsize=(6, 3))
     sns.heatmap(
-        corr_matrix, annot=True, cmap=HEATMAP_CMAP, center=0, fmt='.2f',
-        linewidths=0.25, ax=ax, annot_kws={"size": 5, "color": "#222"},
-        cbar=False, square=True
+        corr_matrix,
+        annot=True,
+        cmap='coolwarm',
+        center=0,
+        fmt='.2f',
+        linewidths=0.5,
+        ax=ax,
+        annot_kws={"size": 6, "color": "black"}
     )
-    ax.set_title("Korrelation Tagesrenditen", fontsize=7, pad=5)
-    ax.tick_params(axis='x', labelsize=5)
-    ax.tick_params(axis='y', labelsize=5)
-    plt.xticks(rotation=45, ha='right')
-    fig.tight_layout(pad=1)
+    ax.set_title("Korrelationsmatrix der täglichen Renditen", fontsize=8, pad=8)
+    ax.tick_params(axis='x', labelsize=7)
+    ax.tick_params(axis='y', labelsize=7)
+    plt.tight_layout()
     st.pyplot(fig)
     return corr_matrix
 
@@ -216,44 +193,18 @@ def analyze_rolling_performance(returns_dict, window=126):
     if rolling_sharpe.empty:
         st.warning("Zu wenig Daten für rollierende Kennzahlen!")
         return rolling_sharpe
-    fig, ax = plt.subplots(figsize=(5, 1.7))
-    for idx, name in enumerate(rolling_sharpe.columns):
-        ax.plot(rolling_sharpe.index, rolling_sharpe[name], label=name, color=LINE_COLORS[idx % len(LINE_COLORS)], linewidth=0.5)
-    ax.set_title(f"Rollierender Sharpe Ratio (126 Tage)", fontsize=5, pad=5)
-    ax.axhline(0, color='#aaa', linestyle='--', linewidth=0.5)
-    ax.legend(loc='upper left', fontsize=5, frameon=False)
-    ax.tick_params(axis='x', labelsize=5)
-    ax.tick_params(axis='y', labelsize=5)
-    ax.grid(True, axis='y', linestyle=':', alpha=0.1)
-    fig.tight_layout(pad=1)
+    fig, ax = plt.subplots(figsize=(6, 2.5))
+    for name in rolling_sharpe:
+        ax.plot(rolling_sharpe.index, rolling_sharpe[name], label=name, linewidth=1)
+    ax.set_title(f"Rollierender Sharpe Ratio (126-Tage Fenster)", fontsize=8, pad=8)
+    ax.axhline(0, color='gray', linestyle='--', linewidth=0.25)
+    ax.legend(loc='center left', bbox_to_anchor=(1.0, 0.5), frameon=False, fontsize=7)
+    ax.tick_params(axis='x', labelsize=7)
+    ax.tick_params(axis='y', labelsize=7)
+    plt.tight_layout()
+    plt.subplots_adjust(right=0.85)
     st.pyplot(fig)
     return rolling_sharpe
-
-def plot_monthly_heatmap(monthly_returns):
-    if monthly_returns.empty:
-        st.warning("Keine Monatsrenditen für diesen Zeitraum vorhanden.")
-        return
-    fig, ax = plt.subplots(figsize=(5, max(1.5, len(monthly_returns.columns)*0.28)))
-    sns.heatmap(
-        monthly_returns.T,
-        annot=True,
-        fmt='-.1%',
-        cmap=HEATMAP_CMAP,
-        center=0,
-        linewidths=0.1,
-        ax=ax,
-        annot_kws={"size": 5, "color": "#333"},
-        cbar=False,
-        square=False
-    )
-    ax.set_title("Monatliche Renditen", fontsize=5, pad=5)
-    ax.set_xticklabels(
-        [pd.to_datetime(label.get_text()).strftime('%Y-%m') for label in ax.get_xticklabels()],
-        rotation=45, ha='right', fontsize=5
-    )
-    ax.set_yticklabels(ax.get_yticklabels(), fontsize=5)
-    plt.tight_layout(pad=1)
-    st.pyplot(fig)
 
 # --------- Streamlit App ---------
 def main():
@@ -365,7 +316,28 @@ def main():
                 name: to_1d_series(ret).resample('M').apply(lambda x: (1 + x).prod() - 1)
                 for name, ret in returns_dict.items()
             })
-            plot_monthly_heatmap(monthly_returns)
+            if not monthly_returns.empty:
+                fig, ax = plt.subplots(figsize=(7, max(2.2, len(monthly_returns.columns)*0.33)))
+                sns.heatmap(
+                    monthly_returns.T,
+                    annot=True,
+                    fmt='-.1%',
+                    cmap='RdYlGn',
+                    center=0,
+                    linewidths=0.5,
+                    ax=ax,
+                    annot_kws={"size": 5, "color": "black", "fontname": "DejaVu Sans"}
+                )
+                ax.set_title("Monatliche Renditen", fontsize=8, pad=10)
+                ax.set_xticklabels(
+                    [pd.to_datetime(label.get_text()).strftime('%Y-%m') for label in ax.get_xticklabels()],
+                    rotation=45, ha='right', fontsize=5
+                )
+                ax.set_yticklabels(ax.get_yticklabels(), fontsize=5)
+                plt.tight_layout()
+                st.pyplot(fig)
+            else:
+                st.warning("Keine Monatsrenditen für diesen Zeitraum vorhanden.")
         else:
             st.warning("Keine Daten vorhanden.")
 
