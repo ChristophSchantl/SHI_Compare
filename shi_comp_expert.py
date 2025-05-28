@@ -148,12 +148,12 @@ def plot_performance(cumulative_dict):
             continue
         ax.plot(cum.index, cum / cum.iloc[0], label=name, color=LINE_COLORS[idx % len(LINE_COLORS)])
     ax.set_title("Kumulative Performance", fontsize=8, pad=5, fontweight='normal')
-    ax.set_xlabel("Datum", fontsize=7)
-    ax.set_ylabel("Indexiert", fontsize=7)
-    ax.legend(loc='upper left', fontsize=6, frameon=False, handlelength=1.8, borderaxespad=0.1, labelspacing=0.2)
-    ax.tick_params(axis='x', labelsize=6)
-    ax.tick_params(axis='y', labelsize=6)
-    ax.grid(True, axis='y', linestyle=':', alpha=0.15)
+    ax.set_xlabel("Datum", fontsize=5)
+    ax.set_ylabel("Indexiert", fontsize=5)
+    ax.legend(loc='upper left', fontsize=5, frameon=False, handlelength=1.8, borderaxespad=0.1, labelspacing=0.2)
+    ax.tick_params(axis='x', labelsize=5)
+    ax.tick_params(axis='y', labelsize=5)
+    ax.grid(True, axis='y', linestyle=':', alpha=0.1)
     fig.tight_layout(pad=1)
     st.pyplot(fig)
 
@@ -170,13 +170,13 @@ def plot_performance(cumulative_dict):
         if drawdown.empty or len(drawdown) < 2:
             continue
         ax2.fill_between(drawdown.index, drawdown.values, 0, color=LINE_COLORS[idx % len(LINE_COLORS)], alpha=0.13)
-        ax2.plot(drawdown.index, drawdown.values, color=LINE_COLORS[idx % len(LINE_COLORS)], linewidth=1, label=name)
-    ax2.set_title("Drawdown-Verlauf", fontsize=8, pad=5)
-    ax2.set_ylabel("Drawdown", fontsize=7)
-    ax2.legend(loc='upper left', fontsize=6, frameon=False)
-    ax2.tick_params(axis='x', labelsize=6)
-    ax2.tick_params(axis='y', labelsize=6)
-    ax2.grid(True, axis='y', linestyle=':', alpha=0.13)
+        ax2.plot(drawdown.index, drawdown.values, color=LINE_COLORS[idx % len(LINE_COLORS)], linewidth=0.5, label=name)
+    ax2.set_title("Drawdown-Verlauf", fontsize=5, pad=5)
+    ax2.set_ylabel("Drawdown", fontsize=5)
+    ax2.legend(loc='upper left', fontsize=5, frameon=False)
+    ax2.tick_params(axis='x', labelsize=5)
+    ax2.tick_params(axis='y', labelsize=5)
+    ax2.grid(True, axis='y', linestyle=':', alpha=0.1)
     fig2.tight_layout(pad=1)
     st.pyplot(fig2)
 
@@ -193,12 +193,12 @@ def analyze_correlations(returns_dict):
     fig, ax = plt.subplots(figsize=(3.8, max(1.4, len(corr_matrix.columns)*0.22)))
     sns.heatmap(
         corr_matrix, annot=True, cmap=HEATMAP_CMAP, center=0, fmt='.2f',
-        linewidths=0.25, ax=ax, annot_kws={"size": 6, "color": "#222"},
+        linewidths=0.25, ax=ax, annot_kws={"size": 5, "color": "#222"},
         cbar=False, square=True
     )
     ax.set_title("Korrelation Tagesrenditen", fontsize=7, pad=5)
-    ax.tick_params(axis='x', labelsize=6)
-    ax.tick_params(axis='y', labelsize=6)
+    ax.tick_params(axis='x', labelsize=5)
+    ax.tick_params(axis='y', labelsize=5)
     plt.xticks(rotation=45, ha='right')
     fig.tight_layout(pad=1)
     st.pyplot(fig)
@@ -218,13 +218,13 @@ def analyze_rolling_performance(returns_dict, window=126):
         return rolling_sharpe
     fig, ax = plt.subplots(figsize=(5, 1.7))
     for idx, name in enumerate(rolling_sharpe.columns):
-        ax.plot(rolling_sharpe.index, rolling_sharpe[name], label=name, color=LINE_COLORS[idx % len(LINE_COLORS)], linewidth=1)
+        ax.plot(rolling_sharpe.index, rolling_sharpe[name], label=name, color=LINE_COLORS[idx % len(LINE_COLORS)], linewidth=0.5)
     ax.set_title(f"Rollierender Sharpe Ratio (126 Tage)", fontsize=7, pad=5)
     ax.axhline(0, color='#aaa', linestyle='--', linewidth=0.5)
-    ax.legend(loc='upper left', fontsize=6, frameon=False)
-    ax.tick_params(axis='x', labelsize=6)
-    ax.tick_params(axis='y', labelsize=6)
-    ax.grid(True, axis='y', linestyle=':', alpha=0.13)
+    ax.legend(loc='upper left', fontsize=5, frameon=False)
+    ax.tick_params(axis='x', labelsize=5)
+    ax.tick_params(axis='y', labelsize=5)
+    ax.grid(True, axis='y', linestyle=':', alpha=0.1)
     fig.tight_layout(pad=1)
     st.pyplot(fig)
     return rolling_sharpe
@@ -233,20 +233,20 @@ def plot_monthly_heatmap(monthly_returns):
     if monthly_returns.empty:
         st.warning("Keine Monatsrenditen für diesen Zeitraum vorhanden.")
         return
-    fig, ax = plt.subplots(figsize=(7, max(1.7, len(monthly_returns.columns)*0.28)))
+    fig, ax = plt.subplots(figsize=(5, max(1.7, len(monthly_returns.columns)*0.28)))
     sns.heatmap(
         monthly_returns.T,
         annot=True,
         fmt='-.1%',
         cmap=HEATMAP_CMAP,
         center=0,
-        linewidths=0.25,
+        linewidths=0.15,
         ax=ax,
         annot_kws={"size": 5, "color": "#333"},
         cbar=False,
         square=False
     )
-    ax.set_title("Monatliche Renditen", fontsize=7, pad=7)
+    ax.set_title("Monatliche Renditen", fontsize=5, pad=5)
     ax.set_xticklabels(
         [pd.to_datetime(label.get_text()).strftime('%Y-%m') for label in ax.get_xticklabels()],
         rotation=45, ha='right', fontsize=5
