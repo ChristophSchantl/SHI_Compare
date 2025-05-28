@@ -14,14 +14,14 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 
 # Matplotlib/Seaborn-Stil
 mpl.rcParams['font.family'] = 'DejaVu Sans'
-mpl.rcParams['font.size'] = 7
-mpl.rcParams['axes.labelsize'] = 7
-mpl.rcParams['axes.titlesize'] = 8
-mpl.rcParams['legend.fontsize'] = 6
-mpl.rcParams['xtick.labelsize'] = 6
-mpl.rcParams['ytick.labelsize'] = 6
+mpl.rcParams['font.size'] = 5
+mpl.rcParams['axes.labelsize'] = 5
+mpl.rcParams['axes.titlesize'] = 5
+mpl.rcParams['legend.fontsize'] = 5
+mpl.rcParams['xtick.labelsize'] = 5
+mpl.rcParams['ytick.labelsize'] = 5
 mpl.rcParams['axes.edgecolor'] = '#d3d3d3'
-mpl.rcParams['axes.linewidth'] = 0.6
+mpl.rcParams['axes.linewidth'] = 0.5
 mpl.rcParams['grid.color'] = '#efefef'
 mpl.rcParams['grid.linewidth'] = 0.4
 mpl.rcParams['figure.facecolor'] = 'white'
@@ -29,8 +29,8 @@ mpl.rcParams['axes.facecolor'] = 'white'
 mpl.rcParams['savefig.facecolor'] = 'white'
 mpl.rcParams['axes.spines.top'] = False
 mpl.rcParams['axes.spines.right'] = False
-mpl.rcParams['lines.linewidth'] = 1
-mpl.rcParams['lines.markersize'] = 2
+mpl.rcParams['lines.linewidth'] = 0.5
+mpl.rcParams['lines.markersize'] = 0.5
 
 # Dezente Linienfarben (Farbliste)
 LINE_COLORS = [
@@ -153,7 +153,7 @@ def plot_performance(cumulative_dict):
     ax.legend(loc='upper left', fontsize=5, frameon=False, handlelength=1.8, borderaxespad=0.1, labelspacing=0.2)
     ax.tick_params(axis='x', labelsize=5)
     ax.tick_params(axis='y', labelsize=5)
-    ax.grid(True, axis='y', linestyle=':', alpha=0.1)
+    ax.grid(True, axis='y', linestyle=':', alpha=0.2)
     fig.tight_layout(pad=1)
     st.pyplot(fig)
 
@@ -176,7 +176,7 @@ def plot_performance(cumulative_dict):
     ax2.legend(loc='upper left', fontsize=5, frameon=False)
     ax2.tick_params(axis='x', labelsize=5)
     ax2.tick_params(axis='y', labelsize=5)
-    ax2.grid(True, axis='y', linestyle=':', alpha=0.1)
+    ax2.grid(True, axis='y', linestyle=':', alpha=0.2)
     fig2.tight_layout(pad=1)
     st.pyplot(fig2)
 
