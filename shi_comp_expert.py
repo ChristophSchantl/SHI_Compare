@@ -317,23 +317,23 @@ def main():
                 for name, ret in returns_dict.items()
             })
             if not monthly_returns.empty:
-                fig, ax = plt.subplots(figsize=(3, max(2, len(monthly_returns.columns)*0.33)))
+                fig, ax = plt.subplots(figsize=(7, max(2.2, len(monthly_returns.columns)*0.33)))
                 sns.heatmap(
                     monthly_returns.T,
                     annot=True,
                     fmt='-.1%',
                     cmap='RdYlGn',
                     center=0,
-                    linewidths=0.15,
+                    linewidths=0.5,
                     ax=ax,
-                    annot_kws={"size": 3, "color": "black", "fontname": "DejaVu Sans"}
+                    annot_kws={"size": 5, "color": "black", "fontname": "DejaVu Sans"}
                 )
-                ax.set_title("Monatliche Renditen", fontsize=4, pad=10)
+                ax.set_title("Monatliche Renditen", fontsize=8, pad=10)
                 ax.set_xticklabels(
                     [pd.to_datetime(label.get_text()).strftime('%Y-%m') for label in ax.get_xticklabels()],
-                    rotation=45, ha='right', fontsize=3
+                    rotation=45, ha='right', fontsize=5
                 )
-                ax.set_yticklabels(ax.get_yticklabels(), fontsize=3)
+                ax.set_yticklabels(ax.get_yticklabels(), fontsize=5)
                 plt.tight_layout()
                 st.pyplot(fig)
             else:
