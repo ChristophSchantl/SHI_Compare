@@ -14,14 +14,14 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 
 # Matplotlib/Seaborn-Stil
 mpl.rcParams['font.family'] = 'DejaVu Sans'
-mpl.rcParams['font.size'] = 7
-mpl.rcParams['axes.labelsize'] = 7
-mpl.rcParams['axes.titlesize'] = 8
-mpl.rcParams['legend.fontsize'] = 6
-mpl.rcParams['xtick.labelsize'] = 6
-mpl.rcParams['ytick.labelsize'] = 6
+mpl.rcParams['font.size'] = 5
+mpl.rcParams['axes.labelsize'] = 5
+mpl.rcParams['axes.titlesize'] = 6
+mpl.rcParams['legend.fontsize'] = 5
+mpl.rcParams['xtick.labelsize'] = 5
+mpl.rcParams['ytick.labelsize'] = 5
 mpl.rcParams['axes.edgecolor'] = '#d3d3d3'
-mpl.rcParams['axes.linewidth'] = 0.6
+mpl.rcParams['axes.linewidth'] = 0.5
 mpl.rcParams['grid.color'] = '#efefef'
 mpl.rcParams['grid.linewidth'] = 0.4
 mpl.rcParams['figure.facecolor'] = 'white'
@@ -169,7 +169,7 @@ def plot_performance(cumulative_dict):
         drawdown = drawdown.dropna()
         if drawdown.empty or len(drawdown) < 2:
             continue
-        ax2.fill_between(drawdown.index, drawdown.values, 0, color=LINE_COLORS[idx % len(LINE_COLORS)], alpha=0.13)
+        ax2.fill_between(drawdown.index, drawdown.values, 0, color=LINE_COLORS[idx % len(LINE_COLORS)], alpha=0.1)
         ax2.plot(drawdown.index, drawdown.values, color=LINE_COLORS[idx % len(LINE_COLORS)], linewidth=0.5, label=name)
     ax2.set_title("Drawdown-Verlauf", fontsize=5, pad=5)
     ax2.set_ylabel("Drawdown", fontsize=5)
@@ -219,7 +219,7 @@ def analyze_rolling_performance(returns_dict, window=126):
     fig, ax = plt.subplots(figsize=(5, 1.7))
     for idx, name in enumerate(rolling_sharpe.columns):
         ax.plot(rolling_sharpe.index, rolling_sharpe[name], label=name, color=LINE_COLORS[idx % len(LINE_COLORS)], linewidth=0.5)
-    ax.set_title(f"Rollierender Sharpe Ratio (126 Tage)", fontsize=7, pad=5)
+    ax.set_title(f"Rollierender Sharpe Ratio (126 Tage)", fontsize=5, pad=5)
     ax.axhline(0, color='#aaa', linestyle='--', linewidth=0.5)
     ax.legend(loc='upper left', fontsize=5, frameon=False)
     ax.tick_params(axis='x', labelsize=5)
@@ -233,14 +233,14 @@ def plot_monthly_heatmap(monthly_returns):
     if monthly_returns.empty:
         st.warning("Keine Monatsrenditen für diesen Zeitraum vorhanden.")
         return
-    fig, ax = plt.subplots(figsize=(5, max(1.7, len(monthly_returns.columns)*0.28)))
+    fig, ax = plt.subplots(figsize=(5, max(1.5, len(monthly_returns.columns)*0.28)))
     sns.heatmap(
         monthly_returns.T,
         annot=True,
         fmt='-.1%',
         cmap=HEATMAP_CMAP,
         center=0,
-        linewidths=0.15,
+        linewidths=0.1,
         ax=ax,
         annot_kws={"size": 5, "color": "#333"},
         cbar=False,
