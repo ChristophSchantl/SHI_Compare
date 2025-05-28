@@ -306,7 +306,16 @@ def main():
             })
             if not monthly_returns.empty:
                 fig, ax = plt.subplots(figsize=(12, max(3, len(monthly_returns.columns))))
-                sns.heatmap(monthly_returns.T, annot=True, fmt='.1%', cmap='RdYlGn', center=0, linewidths=0.5, ax=ax)
+                sns.heatmap(
+                    monthly_returns.T,
+                    annot=True,
+                    fmt='.1%',
+                    cmap='RdYlGn',
+                    center=0,
+                    linewidths=0.5,
+                    ax=ax,
+                    annot_kws={"size": 8, "color": "black", "fontname": "DejaVu Sans"}  # <--- hier!
+                )
                 ax.set_title("Monatliche Renditen", fontsize=14, pad=20)
                 ax.set_xticklabels(
                     [pd.to_datetime(label.get_text()).strftime('%Y-%m') for label in ax.get_xticklabels()],
