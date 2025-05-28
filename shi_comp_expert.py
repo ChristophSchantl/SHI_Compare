@@ -162,12 +162,25 @@ def analyze_correlations(returns_dict):
     if corr_matrix.empty:
         st.warning("Zu wenig Daten für Korrelationsmatrix!")
         return corr_matrix
-    fig, ax = plt.subplots(figsize=(12, 4))
-    sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', center=0, fmt='.2f', linewidths=0.5, ax=ax)
-    ax.set_title("Korrelationsmatrix der täglichen Renditen", fontsize=14, pad=20)
+    # --- Hier: kleinere Grafik und kleinere Schriftarten
+    fig, ax = plt.subplots(figsize=(7, 2.5))  # kleineres Bild
+    sns.heatmap(
+        corr_matrix,
+        annot=True,
+        cmap='coolwarm',
+        center=0,
+        fmt='.2f',
+        linewidths=0.5,
+        ax=ax,
+        annot_kws={"size": 8, "color": "black", "fontname": "DejaVu Sans"}  # kleinere Zahlen
+    )
+    ax.set_title("Korrelationsmatrix der täglichen Renditen", fontsize=10, pad=8)  # kleiner Titel
+    ax.tick_params(axis='x', labelsize=8)
+    ax.tick_params(axis='y', labelsize=8)
     plt.tight_layout()
     st.pyplot(fig)
     return corr_matrix
+
 
 def analyze_rolling_performance(returns_dict, window=126):
     rolling_sharpe = pd.DataFrame()
