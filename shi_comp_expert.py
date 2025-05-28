@@ -163,7 +163,7 @@ def analyze_correlations(returns_dict):
         st.warning("Zu wenig Daten für Korrelationsmatrix!")
         return corr_matrix
         
-    fig, ax = plt.subplots(figsize=(8, 4)) 
+    fig, ax = plt.subplots(figsize=(8, 6)) 
     sns.heatmap(
         corr_matrix,
         annot=True,
@@ -174,12 +174,12 @@ def analyze_correlations(returns_dict):
         ax=ax,
         annot_kws={"size": 6, "color": "black"}  # Größe der Zahlen
     )
-    ax.set_title("Korrelationsmatrix der täglichen Renditen", fontsize=12, pad=10)
+    ax.set_title("Korrelationsmatrix der täglichen Renditen", fontsize=8, pad=6)
     ax.tick_params(axis='x', labelsize=8)  # X-Beschriftung
     ax.tick_params(axis='y', labelsize=8)  # Y-Beschriftung
     plt.tight_layout()
-    st.pyplot(fig)                # <---- Diese Zeile war bei dir vergessen!
-    return corr_matrix            # <---- und diese auch!
+    st.pyplot(fig)                
+    return corr_matrix 
 
     
 
