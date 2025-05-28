@@ -162,7 +162,9 @@ def analyze_correlations(returns_dict):
     if corr_matrix.empty:
         st.warning("Zu wenig Daten für Korrelationsmatrix!")
         return corr_matrix
+        
     # -- Kleinere Figure --
+    
     fig, ax = plt.subplots(figsize=(8, 4)) 
     sns.heatmap(
         corr_matrix,
@@ -174,13 +176,10 @@ def analyze_correlations(returns_dict):
         ax=ax,
         annot_kws={"size": 6, "color": "black"}  # Größe der Zahlen
     )
-    # -- Titel und Achsen-Beschriftungen kleiner machen --
     ax.set_title("Korrelationsmatrix der täglichen Renditen", fontsize=12, pad=10)
-    ax.tick_params(axis='x', labelsize=12)  # Größe der x-Achsen-Beschriftung
-    ax.tick_params(axis='y', labelsize=12)  # Größe der y-Achsen-Beschriftung
-    plt.tight_layout()
-    st.pyplot(fig)
-    return corr_matrix
+    ax.tick_params(axis='x', labelsize=8)  # X-Beschriftung
+    ax.tick_params(axis='y', labelsize=8)  # Y-Beschriftung
+    
 
 
 
