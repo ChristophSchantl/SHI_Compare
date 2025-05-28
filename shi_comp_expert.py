@@ -266,19 +266,16 @@ def main():
             'Total Return', 'Annual Return', 'Annual Volatility', 'Max Drawdown', 'VaR (95%)',
             'CVaR (95%)', 'Win Rate', 'Avg Win', 'Avg Loss', 'Positive Months'
         ]
-        # Formatierung für Prozentspalten
         metrics_fmt = metrics.copy()
         for col in percent_cols:
             if col in metrics_fmt.columns:
                 metrics_fmt[col] = (metrics_fmt[col]*100).round(2).astype(str) + '%'
-        # Dezimalspalten runden
         for col in ['Sharpe Ratio', 'Sortino Ratio', 'Calmar Ratio', 'Omega Ratio', 'Tail Ratio', 'Profit Factor']:
             if col in metrics_fmt.columns:
                 metrics_fmt[col] = metrics_fmt[col].round(2)
-        # Indizes fett wie im Screenshot
         metrics_fmt.index = metrics_fmt.index.to_series().apply(lambda x: f"**{x}**")
-        # Breite automatisch
         st.dataframe(metrics_fmt, use_container_width=True, height=350)
+
 
     # --- Performance-Tab ---
     with tabs[1]:
