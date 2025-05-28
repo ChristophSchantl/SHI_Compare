@@ -174,7 +174,7 @@ def analyze_correlations(returns_dict):
         ax=ax,
         annot_kws={"size": 6, "color": "black"}
     )
-    ax.set_title("Korrelationsmatrix der täglichen Renditen", fontsize=10, pad=10)
+    ax.set_title("Korrelationsmatrix der täglichen Renditen", fontsize=8, pad=8)
     ax.tick_params(axis='x', labelsize=7)
     ax.tick_params(axis='y', labelsize=7)
     plt.tight_layout()
@@ -326,12 +326,12 @@ def main():
                     center=0,
                     linewidths=0.5,
                     ax=ax,
-                    annot_kws={"size": 6, "color": "black", "fontname": "DejaVu Sans"}
+                    annot_kws={"size": 5, "color": "black", "fontname": "DejaVu Sans"}
                 )
-                ax.set_title("Monatliche Renditen", fontsize=10, pad=12)
+                ax.set_title("Monatliche Renditen", fontsize=8, pad=10)
                 ax.set_xticklabels(
                     [pd.to_datetime(label.get_text()).strftime('%Y-%m') for label in ax.get_xticklabels()],
-                    rotation=45, ha='right', fontsize=7
+                    rotation=45, ha='right', fontsize=5
                 )
                 ax.set_yticklabels(ax.get_yticklabels(), fontsize=7)
                 plt.tight_layout()
