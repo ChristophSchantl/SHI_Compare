@@ -162,9 +162,9 @@ def analyze_correlations(returns_dict):
     if corr_matrix.empty:
         st.warning("Zu wenig Daten für Korrelationsmatrix!")
         return corr_matrix
-    fig, ax = plt.subplots(figsize=(12, 4))
+    fig, ax = plt.subplots(figsize=(10, 4))
     sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', center=0, fmt='.2f', linewidths=0.5, ax=ax)
-    ax.set_title("Korrelationsmatrix der täglichen Renditen", fontsize=14, pad=20)
+    ax.set_title("Korrelationsmatrix der täglichen Renditen", fontsize=10, pad=10)
     plt.tight_layout()
     st.pyplot(fig)
     return corr_matrix
