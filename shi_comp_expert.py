@@ -298,9 +298,7 @@ def main():
 
     # --- Monatsrenditen Heatmap ---
 
-    tabs = st.tabs(["📈 Metriken", "🚦 Performance", "📉 Drawdown & Korrelation", "📊 Monatsrenditen"])
-
-
+    
     with tabs[3]:
         st.subheader("Monatliche Renditen")
         if returns_dict:
