@@ -257,24 +257,24 @@ def main():
 
     # --- Metrik-Tab ---
     with tabs[0]:
-    st.subheader("Erweiterte Risikokennzahlen")
-    if not returns_dict:
-        st.warning("Bitte Datenquelle(n) hochladen oder Ticker eingeben.")
-    else:
-        metrics = calculate_metrics(returns_dict, cumulative_dict)
-        percent_cols = [
-            'Total Return', 'Annual Return', 'Annual Volatility', 'Max Drawdown', 'VaR (95%)',
-            'CVaR (95%)', 'Win Rate', 'Avg Win', 'Avg Loss', 'Positive Months'
-        ]
-        metrics_fmt = metrics.copy()
-        for col in percent_cols:
-            if col in metrics_fmt.columns:
-                metrics_fmt[col] = (metrics_fmt[col]*100).round(2).astype(str) + '%'
-        for col in ['Sharpe Ratio', 'Sortino Ratio', 'Calmar Ratio', 'Omega Ratio', 'Tail Ratio', 'Profit Factor']:
-            if col in metrics_fmt.columns:
-                metrics_fmt[col] = metrics_fmt[col].round(2)
-        metrics_fmt.index = metrics_fmt.index.to_series().apply(lambda x: f"**{x}**")
-        st.dataframe(metrics_fmt, use_container_width=True, height=350)
+        st.subheader("Erweiterte Risikokennzahlen")
+        if not returns_dict:
+            st.warning("Bitte Datenquelle(n) hochladen oder Ticker eingeben.")
+        else:
+            metrics = calculate_metrics(returns_dict, cumulative_dict)
+            percent_cols = [
+                'Total Return', 'Annual Return', 'Annual Volatility', 'Max Drawdown', 'VaR (95%)',
+                'CVaR (95%)', 'Win Rate', 'Avg Win', 'Avg Loss', 'Positive Months'
+            ]
+            metrics_fmt = metrics.copy()
+            for col in percent_cols:
+                if col in metrics_fmt.columns:
+                    metrics_fmt[col] = (metrics_fmt[col]*100).round(2).astype(str) + '%'
+            for col in ['Sharpe Ratio', 'Sortino Ratio', 'Calmar Ratio', 'Omega Ratio', 'Tail Ratio', 'Profit Factor']:
+                if col in metrics_fmt.columns:
+                    metrics_fmt[col] = metrics_fmt[col].round(2)
+            metrics_fmt.index = metrics_fmt.index.to_series().apply(lambda x: f"**{x}**")
+            st.dataframe(metrics_fmt, use_container_width=True, height=350)
 
 
     # --- Performance-Tab ---
