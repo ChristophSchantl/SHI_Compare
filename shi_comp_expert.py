@@ -29,8 +29,8 @@ mpl.rcParams['axes.facecolor'] = 'white'
 mpl.rcParams['savefig.facecolor'] = 'white'
 mpl.rcParams['axes.spines.top'] = False
 mpl.rcParams['axes.spines.right'] = False
-mpl.rcParams['lines.linewidth'] = 1
-mpl.rcParams['lines.markersize'] = 2
+mpl.rcParams['lines.linewidth'] = 0.5
+mpl.rcParams['lines.markersize'] = 1
 
 # Dezente Linienfarben (Farbliste)
 LINE_COLORS = [
