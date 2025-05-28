@@ -297,34 +297,38 @@ def main():
             analyze_correlations(returns_dict)
 
     # --- Monatsrenditen Heatmap ---
-    with tabs[3]:
-        st.subheader("Monatliche Renditen")
-        if returns_dict:
-            monthly_returns = pd.DataFrame({
-                name: to_1d_series(ret).resample('M').apply(lambda x: (1 + x).prod() - 1)
-                for name, ret in returns_dict.items()
-            })
-            if not monthly_returns.empty:
-                fig, ax = plt.subplots(figsize=(12, max(3, len(monthly_returns.columns))))
-                sns.heatmap(
-                    monthly_returns.T,
-                    annot=True,
-                    fmt='.1%',
-                    cmap='RdYlGn',
-                    center=0,
-                    linewidths=0.5,
-                    ax=ax,
-                    annot_kws={"size": 8, "color": "black", "fontname": "DejaVu Sans"}  # <--- hier!
-                )
-                ax.set_title("Monatliche Renditen", fontsize=14, pad=20)
-                ax.set_xticklabels(
-                    [pd.to_datetime(label.get_text()).strftime('%Y-%m') for label in ax.get_xticklabels()],
-                    rotation=45, ha='right'
-                )
-                plt.tight_layout()
-                st.pyplot(fig)
-            else:
-                st.warning("Keine Monatsrenditen für diesen Zeitraum vorhanden.")
+    # --- Monatsrenditen Heatmap ---
+with tabs[3]:
+    st.subheader("Monatliche Renditen")
+    if returns_dict:
+        monthly_returns = pd.DataFrame({
+            name: to_1d_series(ret).resample('M').apply(lambda x: (1 + x).prod() - 1)
+            for name, ret in returns_dict.items()
+        })
+        if not monthly_returns.empty:
+            fig, ax = plt.subplots(figsize=(12, max(3, len(monthly_returns.columns))))
+            sns.heatmap(
+                monthly_returns.T,
+                annot=True,
+                fmt='-.1%',
+                cmap='RdYlGn',
+                center=0,
+                linewidths=0.5,
+                ax=ax,
+                annot_kws={"size": 8, "color": "black", "fontname": "DejaVu Sans"}
+            )
+            ax.set_title("Monatliche Renditen", fontsize=14, pad=20)
+            ax.set_xticklabels(
+                [pd.to_datetime(label.get_text()).strftime('%Y-%m') for label in ax.get_xticklabels()],
+                rotation=45, ha='right'
+            )
+            plt.tight_layout()
+            st.pyplot(fig)
+        else:
+            st.warning("Keine Monatsrenditen für diesen Zeitraum vorhanden.")
+    else:
+        st.warning("Keine Daten vorhanden.")
+
 
 if __name__ == "__main__":
     main()
