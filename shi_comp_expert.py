@@ -14,14 +14,14 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 
 # Matplotlib/Seaborn-Stil
 mpl.rcParams['font.family'] = 'DejaVu Sans'
-mpl.rcParams['font.size'] = 5
-mpl.rcParams['axes.labelsize'] = 5
-mpl.rcParams['axes.titlesize'] = 5
-mpl.rcParams['legend.fontsize'] = 5
-mpl.rcParams['xtick.labelsize'] = 5
-mpl.rcParams['ytick.labelsize'] = 5
+mpl.rcParams['font.size'] = 7
+mpl.rcParams['axes.labelsize'] = 7
+mpl.rcParams['axes.titlesize'] = 8
+mpl.rcParams['legend.fontsize'] = 6
+mpl.rcParams['xtick.labelsize'] = 6
+mpl.rcParams['ytick.labelsize'] = 6
 mpl.rcParams['axes.edgecolor'] = '#d3d3d3'
-mpl.rcParams['axes.linewidth'] = 0.5
+mpl.rcParams['axes.linewidth'] = 0.6
 mpl.rcParams['grid.color'] = '#efefef'
 mpl.rcParams['grid.linewidth'] = 0.4
 mpl.rcParams['figure.facecolor'] = 'white'
@@ -29,8 +29,8 @@ mpl.rcParams['axes.facecolor'] = 'white'
 mpl.rcParams['savefig.facecolor'] = 'white'
 mpl.rcParams['axes.spines.top'] = False
 mpl.rcParams['axes.spines.right'] = False
-mpl.rcParams['lines.linewidth'] = 0.5
-mpl.rcParams['lines.markersize'] = 0.5
+mpl.rcParams['lines.linewidth'] = 1
+mpl.rcParams['lines.markersize'] = 2
 
 # Dezente Linienfarben (Farbliste)
 LINE_COLORS = [
@@ -148,12 +148,12 @@ def plot_performance(cumulative_dict):
             continue
         ax.plot(cum.index, cum / cum.iloc[0], label=name, color=LINE_COLORS[idx % len(LINE_COLORS)])
     ax.set_title("Kumulative Performance", fontsize=8, pad=5, fontweight='normal')
-    ax.set_xlabel("Datum", fontsize=5)
-    ax.set_ylabel("Indexiert", fontsize=5)
-    ax.legend(loc='upper left', fontsize=5, frameon=False, handlelength=1.8, borderaxespad=0.1, labelspacing=0.2)
-    ax.tick_params(axis='x', labelsize=5)
-    ax.tick_params(axis='y', labelsize=5)
-    ax.grid(True, axis='y', linestyle=':', alpha=0.1)
+    ax.set_xlabel("Datum", fontsize=7)
+    ax.set_ylabel("Indexiert", fontsize=7)
+    ax.legend(loc='upper left', fontsize=6, frameon=False, handlelength=1.8, borderaxespad=0.1, labelspacing=0.2)
+    ax.tick_params(axis='x', labelsize=6)
+    ax.tick_params(axis='y', labelsize=6)
+    ax.grid(True, axis='y', linestyle=':', alpha=0.15)
     fig.tight_layout(pad=1)
     st.pyplot(fig)
 
@@ -169,14 +169,14 @@ def plot_performance(cumulative_dict):
         drawdown = drawdown.dropna()
         if drawdown.empty or len(drawdown) < 2:
             continue
-        ax2.fill_between(drawdown.index, drawdown.values, 0, color=LINE_COLORS[idx % len(LINE_COLORS)], alpha=0.1)
+        ax2.fill_between(drawdown.index, drawdown.values, 0, color=LINE_COLORS[idx % len(LINE_COLORS)], alpha=0.13)
         ax2.plot(drawdown.index, drawdown.values, color=LINE_COLORS[idx % len(LINE_COLORS)], linewidth=1, label=name)
     ax2.set_title("Drawdown-Verlauf", fontsize=8, pad=5)
-    ax2.set_ylabel("Drawdown", fontsize=5)
-    ax2.legend(loc='upper left', fontsize=5, frameon=False)
-    ax2.tick_params(axis='x', labelsize=5)
-    ax2.tick_params(axis='y', labelsize=5)
-    ax2.grid(True, axis='y', linestyle=':', alpha=0.1)
+    ax2.set_ylabel("Drawdown", fontsize=7)
+    ax2.legend(loc='upper left', fontsize=6, frameon=False)
+    ax2.tick_params(axis='x', labelsize=6)
+    ax2.tick_params(axis='y', labelsize=6)
+    ax2.grid(True, axis='y', linestyle=':', alpha=0.13)
     fig2.tight_layout(pad=1)
     st.pyplot(fig2)
 
@@ -193,12 +193,12 @@ def analyze_correlations(returns_dict):
     fig, ax = plt.subplots(figsize=(3.8, max(1.4, len(corr_matrix.columns)*0.22)))
     sns.heatmap(
         corr_matrix, annot=True, cmap=HEATMAP_CMAP, center=0, fmt='.2f',
-        linewidths=0.15, ax=ax, annot_kws={"size": 5, "color": "#222"},
+        linewidths=0.25, ax=ax, annot_kws={"size": 6, "color": "#222"},
         cbar=False, square=True
     )
     ax.set_title("Korrelation Tagesrenditen", fontsize=7, pad=5)
-    ax.tick_params(axis='x', labelsize=5)
-    ax.tick_params(axis='y', labelsize=5)
+    ax.tick_params(axis='x', labelsize=6)
+    ax.tick_params(axis='y', labelsize=6)
     plt.xticks(rotation=45, ha='right')
     fig.tight_layout(pad=1)
     st.pyplot(fig)
@@ -218,13 +218,13 @@ def analyze_rolling_performance(returns_dict, window=126):
         return rolling_sharpe
     fig, ax = plt.subplots(figsize=(5, 1.7))
     for idx, name in enumerate(rolling_sharpe.columns):
-        ax.plot(rolling_sharpe.index, rolling_sharpe[name], label=name, color=LINE_COLORS[idx % len(LINE_COLORS)], linewidth=0.1)
-    ax.set_title(f"Rollierender Sharpe Ratio (126 Tage)", fontsize=5, pad=5)
-    ax.axhline(0, color='#aaa', linestyle='--', linewidth=0.1)
+        ax.plot(rolling_sharpe.index, rolling_sharpe[name], label=name, color=LINE_COLORS[idx % len(LINE_COLORS)], linewidth=1)
+    ax.set_title(f"Rollierender Sharpe Ratio (126 Tage)", fontsize=7, pad=5)
+    ax.axhline(0, color='#aaa', linestyle='--', linewidth=0.5)
     ax.legend(loc='upper left', fontsize=6, frameon=False)
-    ax.tick_params(axis='x', labelsize=5)
-    ax.tick_params(axis='y', labelsize=5)
-    ax.grid(True, axis='y', linestyle=':', alpha=0.1)
+    ax.tick_params(axis='x', labelsize=6)
+    ax.tick_params(axis='y', labelsize=6)
+    ax.grid(True, axis='y', linestyle=':', alpha=0.13)
     fig.tight_layout(pad=1)
     st.pyplot(fig)
     return rolling_sharpe
@@ -240,7 +240,7 @@ def plot_monthly_heatmap(monthly_returns):
         fmt='-.1%',
         cmap=HEATMAP_CMAP,
         center=0,
-        linewidths=0.15,
+        linewidths=0.25,
         ax=ax,
         annot_kws={"size": 5, "color": "#333"},
         cbar=False,
@@ -371,3 +371,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
