@@ -1,4 +1,6 @@
 
+from st_aggrid import AgGrid, GridOptionsBuilder
+
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -265,10 +267,9 @@ def analyze_rolling_performance(returns_dict, window=126):
     return rolling_sharpe, rolling_vol
 
 def main():
-    st.title("Portfolio Analyse Dashboard")
+    st.title("Portfolio Analyse Dashboard (ohne empyrical)")
     st.markdown("Vergleich verschiedener Strategien und Fonds (inkl. echte Namen aus Yahoo Finance)")
 
-    # Zeitauswahl (Timeline)
     min_date = datetime(2024, 1, 1)
     max_date = datetime.today()
     col1, col2 = st.columns(2)
@@ -280,31 +281,41 @@ def main():
         st.error("Das Startdatum darf nicht nach dem Enddatum liegen!")
         st.stop()
 
-    # Lade Yahoo-Namen
     display_names_map = cached_display_names_map()
 
-    # Lade alle Daten
     with st.spinner("Daten werden geladen..."):
         returns_dict, cumulative_dict = load_and_sync_data(start, end, display_names_map)
         metrics = calculate_metrics(returns_dict, cumulative_dict)
 
-    # Metriken-Tabellen
     st.subheader("Risikokennzahlen & Performance")
     if metrics.empty:
         st.warning("Keine Daten für diesen Zeitraum!")
     else:
-        st.dataframe(metrics.style.format({
-            'Total Return': "{:.2%}", 'Annual Return': "{:.2%}",
-            'Annual Volatility': "{:.2%}", 'Sharpe Ratio': "{:.2f}",
-            'Sortino Ratio': "{:.2f}", 'Max Drawdown': "{:.2%}",
-            'Calmar Ratio': "{:.2f}", 'VaR (95%)': "{:.2%}",
-            'CVaR (95%)': "{:.2%}", 'Omega Ratio': "{:.2f}",
-            'Tail Ratio': "{:.2f}", 'Win Rate': "{:.2%}",
-            'Avg Win': "{:.2%}", 'Avg Loss': "{:.2%}",
-            'Profit Factor': "{:.2f}", 'Positive Months': "{:.2%}"
-        }), height=400)
+        # Formatiere Prozentspalten für schönere Anzeige
+        percent_cols = [
+            'Total Return', 'Annual Return', 'Annual Volatility', 'Max Drawdown', 'VaR (95%)',
+            'CVaR (95%)', 'Win Rate', 'Avg Win', 'Avg Loss', 'Positive Months'
+        ]
+        metrics_fmt = metrics.copy()
+        for col in percent_cols:
+            if col in metrics_fmt.columns:
+                metrics_fmt[col] = (metrics_fmt[col]*100).round(2).astype(str) + '%'
+        # AG Grid Optionen: Blättern, Suche, Scrollen, Sortieren, Seitenbreite!
+        gb = GridOptionsBuilder.from_dataframe(metrics_fmt)
+        gb.configure_pagination(enabled=True, paginationAutoPageSize=False, paginationPageSize=10)
+        gb.configure_default_column(resizable=True, filter=True, sortable=True)
+        gb.configure_side_bar()
+        gridOptions = gb.build()
+        AgGrid(
+            metrics_fmt,
+            gridOptions=gridOptions,
+            fit_columns_on_grid_load=True,
+            enable_enterprise_modules=True,
+            height=400,
+            width='100%'
+        )
 
-    # Plots
+    # Rest wie gehabt:
     st.subheader("Kumulative Performance & Drawdown")
     plot_performance(cumulative_dict)
 
@@ -314,7 +325,6 @@ def main():
     st.subheader("Korrelation der Tagesrenditen")
     analyze_correlations(returns_dict)
 
-    # Monatsrenditen als Heatmap
     st.subheader("Monatliche Renditen")
     monthly_returns = pd.DataFrame({
         name: to_1d_series(ret).resample('M').apply(lambda x: (1 + x).prod() - 1)
