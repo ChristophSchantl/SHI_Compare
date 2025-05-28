@@ -297,7 +297,10 @@ def main():
             analyze_correlations(returns_dict)
 
     # --- Monatsrenditen Heatmap ---
-    # --- Monatsrenditen Heatmap ---
+
+tabs = st.tabs(["📈 Metriken", "🚦 Performance", "📉 Drawdown & Korrelation", "📊 Monatsrenditen"])
+
+
 with tabs[3]:
     st.subheader("Monatliche Renditen")
     if returns_dict:
