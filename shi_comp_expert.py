@@ -111,7 +111,7 @@ def plot_performance(cumulative_dict):
     for name, cum in cumulative_dict.items():
         if cum is None or len(cum) == 0:
             continue
-        ax.plot(cum.index, cum / cum.iloc[0], label=name, linewidth=1)
+        ax.plot(cum.index, cum / cum.iloc[0], label=name, linewidth=0.5)
     ax.set_title("Kumulative Performance (Start = 1.0)", fontsize=8, pad=8)
     ax.set_xlabel("Datum", fontsize=5)
     ax.set_ylabel("Indexierte Entwicklung", fontsize=5)
@@ -172,7 +172,7 @@ def analyze_correlations(returns_dict):
         fmt='.2f',
         linewidths=0.5,
         ax=ax,
-        annot_kws={"size": 6, "color": "black"}
+        annot_kws={"size": 4, "color": "black"}
     )
     ax.set_title("Korrelationsmatrix der täglichen Renditen", fontsize=8, pad=8)
     ax.tick_params(axis='x', labelsize=7)
