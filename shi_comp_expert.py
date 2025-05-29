@@ -174,6 +174,10 @@ def analyze_correlations(returns_dict):
         ax=ax,
         annot_kws={"size": 5, "color": "black"}  # kleine Schriftgröße!
     )
+
+    cbar = ax.collections[0].colorbar
+    cbar.ax.tick_params(labelsize=5)
+    
     ax.set_title("Korrelationsmatrix der täglichen Renditen", fontsize=6, pad=6)
     ax.tick_params(axis='x', labelsize=3)      # X-Achse klein
     ax.tick_params(axis='y', labelsize=3)      # Y-Achse klein
