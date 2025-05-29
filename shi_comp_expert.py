@@ -195,7 +195,7 @@ def analyze_rolling_performance(returns_dict, window=126):
         return rolling_sharpe
     fig, ax = plt.subplots(figsize=(6, 2.5))
     for name in rolling_sharpe:
-        ax.plot(rolling_sharpe.index, rolling_sharpe[name], label=name, linewidth=1)
+        ax.plot(rolling_sharpe.index, rolling_sharpe[name], label=name, linewidth=0.5)
     ax.set_title(f"Rollierender Sharpe Ratio (126-Tage Fenster)", fontsize=8, pad=8)
     ax.axhline(0, color='gray', linestyle='--', linewidth=0.25)
     ax.legend(loc='center left', bbox_to_anchor=(1.0, 0.5), frameon=False, fontsize=7)
