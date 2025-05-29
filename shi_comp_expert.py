@@ -13,7 +13,17 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 sns.set_theme(style="darkgrid")
 plt.style.use('seaborn-v0_8-darkgrid')
 pd.set_option('display.float_format', '{:.2%}'.format)
-st.set_page_config(page_title="Strategie-Analyse & Risiko-Kennzahlen", layout="wide")
+#st.set_page_config(page_title="Strategie-Analyse & Risiko-Kennzahlen", layout="wide")
+
+st.set_page_config(
+    page_title="SHI Zertifikate im Vergleich",
+    page_icon="📊", 
+    layout="wide"
+)
+
+
+
+
 
 RISK_FREE_RATE = 0.02  # 2% p.a.
 
