@@ -172,11 +172,11 @@ def analyze_correlations(returns_dict):
         fmt='.2f',
         linewidths=0.5,
         ax=ax,
-        annot_kws={"size": 6, "color": "black"}
+        annot_kws={"size": 5, "color": "black"}  # kleine Schriftgröße!
     )
     ax.set_title("Korrelationsmatrix der täglichen Renditen", fontsize=8, pad=8)
-    ax.tick_params(axis='x', labelsize=7)
-    ax.tick_params(axis='y', labelsize=7)
+    ax.tick_params(axis='x', labelsize=5)      # X-Achse klein
+    ax.tick_params(axis='y', labelsize=5)      # Y-Achse klein
     plt.tight_layout()
     st.pyplot(fig)
     return corr_matrix
