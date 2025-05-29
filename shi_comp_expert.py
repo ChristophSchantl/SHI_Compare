@@ -341,14 +341,14 @@ def main():
                     center=0,
                     linewidths=0.5,
                     ax=ax,
-                    annot_kws={"size": 3, "color": "black", "fontname": "DejaVu Sans"}
+                    annot_kws={"size": 4, "color": "black", "fontname": "DejaVu Sans"}
                 )
                 ax.set_title("Monatliche Renditen", fontsize=8, pad=10)
                 ax.set_xticklabels(
                     [pd.to_datetime(label.get_text()).strftime('%Y-%m') for label in ax.get_xticklabels()],
-                    rotation=45, ha='right', fontsize=4
+                    rotation=45, ha='right', fontsize=3
                 )
-                ax.set_yticklabels(ax.get_yticklabels(), fontsize=4)
+                ax.set_yticklabels(ax.get_yticklabels(), fontsize=3)
                 plt.tight_layout()
                 st.pyplot(fig)
             else:
