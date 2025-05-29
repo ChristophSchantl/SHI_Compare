@@ -174,9 +174,9 @@ def analyze_correlations(returns_dict):
         ax=ax,
         annot_kws={"size": 5, "color": "black"}  # kleine Schriftgröße!
     )
-    ax.set_title("Korrelationsmatrix der täglichen Renditen", fontsize=8, pad=8)
-    ax.tick_params(axis='x', labelsize=5)      # X-Achse klein
-    ax.tick_params(axis='y', labelsize=5)      # Y-Achse klein
+    ax.set_title("Korrelationsmatrix der täglichen Renditen", fontsize=6, pad=6)
+    ax.tick_params(axis='x', labelsize=3)      # X-Achse klein
+    ax.tick_params(axis='y', labelsize=3)      # Y-Achse klein
     plt.tight_layout()
     st.pyplot(fig)
     return corr_matrix
@@ -343,12 +343,12 @@ def main():
                     ax=ax,
                     annot_kws={"size": 3, "color": "black", "fontname": "DejaVu Sans"}
                 )
-                ax.set_title("Monatliche Renditen", fontsize=6, pad=8)
+                ax.set_title("Monatliche Renditen", fontsize=8, pad=10)
                 ax.set_xticklabels(
                     [pd.to_datetime(label.get_text()).strftime('%Y-%m') for label in ax.get_xticklabels()],
-                    rotation=45, ha='right', fontsize=3
+                    rotation=45, ha='right', fontsize=4
                 )
-                ax.set_yticklabels(ax.get_yticklabels(), fontsize=3)
+                ax.set_yticklabels(ax.get_yticklabels(), fontsize=4)
                 plt.tight_layout()
                 st.pyplot(fig)
             else:
