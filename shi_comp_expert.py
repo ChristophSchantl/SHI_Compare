@@ -332,7 +332,7 @@ def main():
                 for name, ret in returns_dict.items()
             })
             if not monthly_returns.empty:
-                fig, ax = plt.subplots(figsize=(7, max(2.2, len(monthly_returns.columns)*0.33)))
+                fig, ax = plt.subplots(figsize=(4, max(2.2, len(monthly_returns.columns)*0.33)))
                 sns.heatmap(
                     monthly_returns.T,
                     annot=True,
