@@ -341,7 +341,7 @@ def main():
                     center=0,
                     linewidths=0.5,
                     ax=ax,
-                    annot_kws={"size": 5, "color": "black", "fontname": "DejaVu Sans"}
+                    annot_kws={"size": 3, "color": "black", "fontname": "DejaVu Sans"}
                 )
                 ax.set_title("Monatliche Renditen", fontsize=8, pad=10)
                 ax.set_xticklabels(
