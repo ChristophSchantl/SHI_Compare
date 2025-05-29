@@ -291,7 +291,7 @@ def main():
             cumulative_dict[name] = cumulative_dict[name].loc[common_index]
 
     # --- Tabs ---
-    #tabs = st.tabs(["🚦 Metriken", "📈 Performance & Drawdown", "📉 Sharpe & Korrelation", "📊 Monatsrenditen"])
+    tabs = st.tabs(["🚦 Metriken", "📈 Performance & Drawdown", "📉 Sharpe & Korrelation", "📊 Monatsrenditen"])
 
     
     # --- Metrik-Tab ---
