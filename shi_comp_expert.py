@@ -140,7 +140,7 @@ def plot_performance(cumulative_dict):
         if len(x) != len(y):
             continue
         ax2.fill_between(x, y, 0, alpha=0.3)
-        ax2.plot(x, y, linewidth=1, label=name)
+        ax2.plot(x, y, linewidth=0.5, label=name)
     ax2.set_title("Drawdown-Verlauf", fontsize=8, pad=8)
     ax2.set_ylabel("Drawdown", fontsize=8)
     ax2.legend(loc='center left', bbox_to_anchor=(1.0, 0.5), frameon=False, fontsize=5)
@@ -172,7 +172,7 @@ def analyze_correlations(returns_dict):
         fmt='.2f',
         linewidths=0.5,
         ax=ax,
-        annot_kws={"size": 4, "color": "black"}
+        annot_kws={"size": 6, "color": "black"}
     )
     ax.set_title("Korrelationsmatrix der täglichen Renditen", fontsize=8, pad=8)
     ax.tick_params(axis='x', labelsize=7)
