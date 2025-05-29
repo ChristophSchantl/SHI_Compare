@@ -212,8 +212,13 @@ def analyze_rolling_performance(returns_dict, window=126):
 
 # --------- Streamlit App ---------
 def main():
-    st.title("📊 SHI Zertifikate im Vergleich – Performance & Risikoanalyse")
+    #st.title("📊 SHI Zertifikate im Vergleich – Performance & Risikoanalyse")
     #st.caption("Strategievergleich mit Benchmarks, Fonds und alternativen Anlagemodellen")
+
+    st.markdown('<h3 style="font-weight:400; margin-bottom:0.2rem;">📊 SHI Zertifikate im Vergleich</h3>', unsafe_allow_html=True)
+    st.caption("Performance-, Risiko- und Benchmarkanalyse auf Monatsbasis")
+
+
     
     # --- Sidebar ---
     with st.sidebar:
@@ -286,8 +291,9 @@ def main():
             cumulative_dict[name] = cumulative_dict[name].loc[common_index]
 
     # --- Tabs ---
-    tabs = st.tabs(["🚦 Metriken", "📈 Performance & Drawdown", "📉 Sharpe & Korrelation", "📊 Monatsrenditen"])
+    #tabs = st.tabs(["🚦 Metriken", "📈 Performance & Drawdown", "📉 Sharpe & Korrelation", "📊 Monatsrenditen"])
 
+    
     # --- Metrik-Tab ---
     with tabs[0]:
         st.subheader("Erweiterte Risikokennzahlen")
