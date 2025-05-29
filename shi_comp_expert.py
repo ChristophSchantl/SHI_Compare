@@ -324,6 +324,7 @@ def main():
             analyze_correlations(returns_dict)
 
     # --- Monatsrenditen Heatmap ---
+    
     with tabs[3]:
         st.subheader("Monatliche Renditen")
         if returns_dict:
@@ -342,7 +343,7 @@ def main():
                     center=0,
                     linewidths=0.5,
                     ax=ax,
-                    annot_kws={"size": 3, "color": "black", "fontname": "DejaVu Sans"},
+                    annot_kws={"size": 4, "color": "black", "fontname": "DejaVu Sans"},
                     cbar_kws={'label': '', 'shrink': 0.8}
                 )
 
