@@ -224,6 +224,34 @@ def main():
         for line in tickers_input.splitlines():
             tickers += [t.strip() for t in line.replace(";", ",").split(",") if t.strip()]
 
+
+
+        
+        autoload_files = [
+            ("SHI_ALPHA_28Mai2025.csv", "SHI_ALPHA"),
+            ("SHI_INCOME_28Mai2025.csv", "SHI_INCOME")
+        ]
+        for filename, displayname in autoload_files:
+            try:
+                ret, cum = load_returns_from_csv(filename)
+                # Filter nach gewähltem Zeitraum
+                ret = ret.loc[(ret.index >= pd.Timestamp(start)) & (ret.index <= pd.Timestamp(end))]
+                cum = cum.loc[(cum.index >= pd.Timestamp(start)) & (cum.index <= pd.Timestamp(end))]
+                returns_dict[displayname] = ret
+                cumulative_dict[displayname] = cum
+            except Exception as e:
+                st.warning(f"Fehler beim Laden von {filename}: {e}")
+
+
+
+
+
+
+
+
+
+
+    
     # --- Daten laden ---
     returns_dict, cumulative_dict = {}, {}
 
