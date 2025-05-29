@@ -223,7 +223,7 @@ def main():
             "Zusatzzertifikate/Strategien (CSV, Close-Spalte)", 
             type="csv", accept_multiple_files=True)
         st.markdown("**Yahoo Finance Ticker (mehrere durch Komma, Zeile, oder Semikolon getrennt):**")
-        tickers_input = st.text_area("Ticker", value="0P0000J5K3.F, 0P0001HPL2.F")
+        tickers_input = st.text_area("Ticker", value="0P0000J5K3.F, 0P0001EK9V.SW")
         tickers = []
         for line in tickers_input.splitlines():
             tickers += [t.strip() for t in line.replace(";", ",").split(",") if t.strip()]
