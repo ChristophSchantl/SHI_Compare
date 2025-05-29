@@ -213,7 +213,7 @@ def analyze_rolling_performance(returns_dict, window=126):
 # --------- Streamlit App ---------
 def main():
     st.title("📊 SHI Zertifikate im Vergleich – Performance & Risikoanalyse")
-    st.caption("Strategievergleich mit Benchmarks, Fonds und alternativen Anlagemodellen")
+    #st.caption("Strategievergleich mit Benchmarks, Fonds und alternativen Anlagemodellen")
     
     # --- Sidebar ---
     with st.sidebar:
